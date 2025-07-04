@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { Login } from './pages/auth/login/login';
 import { AuthLayout } from './core/layouts/auth-layout/auth-layout';
 import { ForgotPassword } from './pages/auth/forgot-password/forgot-password';
-import { Dashboard } from './pages/dashboard/dashboard';
 import { DashboardLayout } from './core/layouts/dashboard-layout/dashboard-layout';
 import { CategoryList } from './pages/category/category-list/category-list';
 import { CategoryCreate } from './pages/category/category-create/category-create';
@@ -43,9 +42,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        redirectTo: 'main/data-list',
-        pathMatch: 'full',
-        // component: Dashboard,
+        component: DataList,
       },
       {
         path: 'category-list',
@@ -62,14 +59,6 @@ export const routes: Routes = [
       {
         path: 'data-list',
         component: DataList,
-      },
-      {
-        path: 'data-create',
-        component: CategoryCreate,
-      },
-      {
-        path: 'data-edit/:id',
-        component: CategoryCreate,
       },
       {
         path: 'user-list',

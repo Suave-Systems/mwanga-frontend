@@ -18,7 +18,7 @@ export class Sidebar {
   allMenu: any[] = [
     {
       title: 'Overview',
-      link: '/main/data-list',
+      link: '/main/dashboard',
       icon: this.sanitizer
         .bypassSecurityTrustHtml(`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

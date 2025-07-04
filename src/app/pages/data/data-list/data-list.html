@@ -1,0 +1,29 @@
+<div class="flex justify-between items-center">
+  <p>Data management</p>
+</div>
+
+<div class="mt-5">
+  <app-select [getObject]="true" [options]="categoryList" placeholder="select a category" label="Category"
+    [control]="categoryObject" [value]="'id'" [displayName]="'name'" errorMessage="Please select a valid category.">
+  </app-select>
+</div>
+
+<!-- File upload & template download section -->
+<div class="mt-6 p-4 border border-gray-300 rounded-xl bg-gray-50">
+  <label class="block mb-2 font-medium text-gray-700">Upload File</label>
+  <div class="flex items-center gap-4">
+    <input class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      type="file" (change)="onFileSelected($event)" />
+
+    <app-button (buttonClick)="downloadTemplateWithHeaders()">
+      <span class="text-nowrap">Download Template</span>
+    </app-button>
+  </div>
+  <p class="mt-2 text-sm text-gray-500">Supported format: .xlsx, .csv</p>
+
+</div>
+<div class="mt-5">
+  <app-button (buttonClick)="onSubmit()">
+    <span class="text-nowrap">Upload Template</span>
+  </app-button>
+</div>

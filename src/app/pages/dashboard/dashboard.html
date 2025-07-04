@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="w-2/3 mx-auto mt-5">
+    <div class="w-full">
+      <app-select label="Document Type" [control]="category"></app-select>
+    </div>
+    <form [formGroup]="form" (submit)="onUpload()" class="grid grid-col-1">
+
+      @if (category.valid) {
+      <div class="mt-5">
+        <app-input label="Select file" [control]="bulk_data"></app-input>
+        <!-- <label for="formFile" class="form-label"></label>
+        <input (change)="onFileSelected($event.target)" class="form-control" type="file" accept=".csv" id="formFile"> -->
+      </div>
+      }
+
+
+      <!-- <div class="col-12 mt-3">
+        <button [disabled]="isLoading || isExtracting" type="submit" class="btn btn-primary">
+          <ng-container *ngIf="isLoading || isExtracting; else uploadingTemplate">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="isExtracting">
+              Extracting file
+            </span>
+            <span *ngIf="isLoading">
+              Uploading file
+            </span>
+          </ng-container>
+          <ng-template #uploadingTemplate>
+            Submit
+          </ng-template>
+        </button>
+      </div> -->
+    </form>
+  </div>
+</div>

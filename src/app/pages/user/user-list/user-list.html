@@ -1,0 +1,10 @@
+<div class="flex justify-between items-center">
+  <p>Manage Users</p>
+
+  <app-button [routerLink]="['/main/user-create']" routerLinkActive="router-link-active"> + New User
+  </app-button>
+</div>
+
+<div class="mt-5">
+  <app-table [columns]="tableColumns" [data]="tableData" (rowClick)="handleRowClick($event)"></app-table>
+</div>

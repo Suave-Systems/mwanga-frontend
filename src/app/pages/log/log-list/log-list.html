@@ -1,0 +1,10 @@
+<div class="flex justify-between items-center">
+  <p>Logs</p>
+
+  <!-- <app-button [routerLink]="['/main/category-create']" routerLinkActive="router-link-active"> Create Category
+  </app-button> -->
+</div>
+
+<div class="mt-5">
+  <app-table [columns]="tableColumns" [data]="tableData" (rowClick)="handleRowClick($event)"></app-table>
+</div>

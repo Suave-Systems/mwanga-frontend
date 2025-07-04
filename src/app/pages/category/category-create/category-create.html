@@ -1,0 +1,50 @@
+<div class="flex flex-col items-center justify-center bg-[#ffffff] p-8 px-4">
+  <div class="w-full bg-white rounded-xl shadow-lg mx-4 p-8">
+    <h2 class="text-[32px] font-semibold text-[#333333] mb-1">Create Category </h2>
+    <p class="text-sm text-[#666666] mb-6">some nice category text</p>
+    @if (errorMessage) {
+    <p class="text-[#F66E6E] text-center text-[1rem]/[1.5rem]">
+      {{errorMessage}}
+    </p>
+    }
+
+    <form [formGroup]="form">
+      <!-- Name -->
+      <div class="mb-4">
+        <app-input [type]="'text'" [id]="'name'" [autocomplete]="'off'" [autofocus]="true" label="Category Name"
+          placeholder="Input category name" [control]="name" [useDefaultError]="true"
+          errorMessage="Please enter a valid name.">
+        </app-input>
+      </div>
+
+      <!-- Columns -->
+      <div formArrayName="columns">
+        <div class="flex justify-between">
+          <h2 class="text-[32px] font-semibold text-[#333333] mb-1">Columns</h2>
+          <app-button [buttonDisabled]="isLoading()" [loading]="isLoading()" (buttonClick)="addColumn()">
+            + Add another column
+          </app-button>
+
+        </div>
+        @for (column of columns.controls; track $index; let i = $index) {
+        <div class="my-3">
+          <app-input [type]="'text'" [id]="'column-{{ i }}'" [autocomplete]="'off'" [autofocus]="true" label="Column:"
+            placeholder="Input column-{{ i + 1 }}" [control]="getColumn(i)" [useDefaultError]="true"
+            errorMessage="Please enter a valid name.">
+          </app-input>
+          <!-- The repeated column template -->
+          <!-- <label for="column-{{ i }}">Column:</label>
+      <input id="column-{{ i }}" type="text" [formControlName]="i" /> -->
+        </div>
+        }
+      </div>
+
+
+      <!-- Submit -->
+      <app-button [buttonDisabled]="isLoading()" [loading]="isLoading()" (buttonClick)="onSubmit()">
+        Continue
+      </app-button>
+    </form>
+
+  </div>
+</div>

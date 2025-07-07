@@ -1,10 +1,50 @@
-<div class="flex justify-between items-center">
-  <p>Category List</p>
+<div class="p-6 bg-white rounded-lg shadow space-y-6">
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-800">Category List</h2>
+      <p class="text-gray-600 mb-6">View, filter, and manage all available data logs in the system.</p>
+    </div>
+    <app-button [routerLink]="['/main/category-create']" routerLinkActive="router-link-active"> + New Category
+    </app-button>
+  </div>
 
-  <app-button [routerLink]="['/main/category-create']" routerLinkActive="router-link-active"> Create Category
-  </app-button>
+  <app-table-filters [filterArray]="isActiveArray" (applyFilters)="onApplyFilter($event)"></app-table-filters>
+
+  <div class="mt-5">
+
+    @if (tableData.length > 0 && !isLoading) {
+    <!-- Table -->
+    <app-table [columns]="tableColumns" [data]="tableData" [menuTemplate]="rowMenu"
+      (menuOpened)="handleMenuOptions($event)"></app-table>
+
+    }
+  </div>
+  @if (isLoading) {
+  <div class="h-[50vh] flex justify-center items-center">
+    <div>
+      <div class="flex items-center justify-center">
+        <span class="table-spinner"></span>
+      </div>
+      <p class="text-center mt-8">Please wait...</p>
+    </div>
+  </div>
+  }
+  @if (tableData.length === 0 && !isLoading) {
+  <div>
+    <app-empty-state></app-empty-state>
+  </div>
+  }
+  <!-- <app-pagination></app-pagination> -->
 </div>
 
-<div class="mt-5">
-  <app-table [columns]="tableColumns" [data]="tableData" (rowClick)="handleRowClick($event)"></app-table>
-</div>
+<mat-menu #rowMenu="matMenu">
+  <div class="bg-white">
+    <button (click)="downloadTemplateWithHeaders()" mat-menu-item>
+      Download Template
+    </button>
+    <button [routerLink]="['/main/category-edit', selectedCategory?.id]" routerLinkActive="router-link-active"
+      mat-menu-item>
+      Edit
+    </button>
+  </div>
+</mat-menu>

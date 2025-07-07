@@ -16,7 +16,12 @@ export class BaseService {
     const keys = Object.keys(params);
     if (keys.length > 0) {
       const queryString = keys
-        .filter((key) => params[key] !== undefined && params[key] !== null)
+        .filter(
+          (key) =>
+            params[key] !== undefined &&
+            params[key] !== null &&
+            params[key] !== ''
+        )
         .map(
           (key) =>
             `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
@@ -31,24 +36,10 @@ export class BaseService {
     );
   }
 
-  sendGet<T>(
-    params: Record<string, string> = {},
-    url: string = this.baseUrl
-  ): Observable<T> {
+  sendGetById<T>(id: string, url: string = this.baseUrl): Observable<T> {
     // Only add query string if params exist
-    const keys = Object.keys(params);
-    if (keys.length > 0) {
-      const queryString = keys
-        .filter((key) => params[key] !== undefined && params[key] !== null)
-        .map(
-          (key) =>
-            `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
-        )
-        .join('&');
 
-      url += url.includes('?') ? '&' + queryString : '?' + queryString;
-    }
-    return this.httpClient.get(url).pipe(
+    return this.httpClient.get(`${url}${id}/`).pipe(
       map((body: any) => body),
       catchError(this.handleError)
     );
@@ -76,7 +67,7 @@ export class BaseService {
   }
 
   sendPatch<T>(payload: any, url: string = this.baseUrl): Observable<T> {
-    return this.httpClient.patch(url, payload).pipe(
+    return this.httpClient.patch(`${url}${payload.id}/`, payload).pipe(
       map((body: any) => body),
       catchError(this.handleError)
     );

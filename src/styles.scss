@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #253a81;
+  --color-primary: #0a0c74;
   --color-primary-hover: #163171;
 }
 
@@ -64,4 +64,17 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.cdk-overlay-pane {
+  background: white;
 }

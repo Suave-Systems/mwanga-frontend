@@ -1,0 +1,67 @@
+<!-- Filters -->
+<div class="flex justify-between gap-4">
+  @if (showSearch) {
+  <div class="w-full">
+    <label class="block">Search</label>
+    <input [(ngModel)]="search" placeholder="Search..."
+      class="w-full px-3 py-2 border border-[#D5D7DA] rounded-[0.5rem] text-sm  shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
+  </div>
+  }
+
+  <div class="w-full">
+    <label class="block">Start Date</label>
+
+    <input readonly (click)="startPicker.open()" [matDatepicker]="startPicker" [(ngModel)]="from_date"
+      placeholder="Select start date"
+      class="w-full px-3 py-2 border border-[#D5D7DA] rounded-[0.5rem] text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
+    <mat-datepicker-toggle [for]="startPicker" class="hidden"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+  </div>
+
+  <div class="w-full">
+    <label class="block">End Date</label>
+
+    <input readonly (click)="endPicker.open()" [matDatepicker]="endPicker" [(ngModel)]="to_date"
+      placeholder="Select end date"
+      class="w-full px-3 py-2 border border-[#D5D7DA] rounded-[0.5rem] text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
+    <mat-datepicker-toggle [for]="endPicker" class="hidden"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+  </div>
+
+  @if (showFilter || (filterArray.length || 0) > 0) {
+  <div class="w-full">
+    <label class="block">{{filterLabel}}</label>
+    <select [(ngModel)]="selectedFilter"
+      class="w-full px-3 py-2 border border-[#D5D7DA] rounded-[0.5rem] text-sm  shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+
+      @for (filter of filterArray; track $index) {
+      <option [ngValue]="filter[filterValue]">{{ filter[filterDisplayName] }}
+      </option>
+      }
+    </select>
+  </div>
+  }
+
+  @if (showCategoryFilter) {
+  <select [(ngModel)]="selectedCategory"
+    class="w-full px-3 py-2 border border-[#D5D7DA] rounded-[0.5rem] text-sm  shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+    <option value="">All Categories</option>
+    <option *ngFor="let category of categoryOptions" [value]="category">{{ category }}</option>
+  </select>
+  }
+</div>
+
+<!-- Filter buttons -->
+<div class="flex gap-4 mt-4 justify-end flex-wrap">
+
+  <app-button [inputClass]="'!text-primary !px-4 !py-2 !w-full !bg-white !border-1 !border-primary'"
+    (buttonClick)="onApplyFilter()"> Apply Filters
+  </app-button>
+  <app-button [inputClass]="'!text-primary !px-4 !py-2 !w-full !bg-white !border-1 !border-primary'"
+    (buttonClick)="onClearFilter()"> Reset
+  </app-button>
+  @if (showDownload) {
+  <app-button (buttonClick)="onDownloadCSV()"> Download CSV
+  </app-button>
+  }
+</div>

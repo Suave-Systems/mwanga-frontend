@@ -43,18 +43,34 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DataList,
+        title: 'Overview',
+        data: {
+          title: 'Overview',
+        },
       },
       {
         path: 'category-list',
         component: CategoryList,
+        title: 'Category Management',
+        data: {
+          title: 'Category Management',
+        },
       },
       {
         path: 'category-create',
         component: CategoryCreate,
+        title: 'New Category',
+        data: {
+          title: 'New Category',
+        },
       },
       {
         path: 'category-edit/:id',
         component: CategoryCreate,
+        title: 'Update Category',
+        data: {
+          title: 'Update Category',
+        },
       },
       {
         path: 'data-list',
@@ -63,22 +79,42 @@ export const routes: Routes = [
       {
         path: 'user-list',
         component: UserList,
+        title: 'User Management',
+        data: {
+          title: 'User Management',
+        },
       },
       {
         path: 'user-create',
         component: UserCreate,
+        title: 'New User',
+        data: {
+          title: 'New User',
+        },
       },
       {
         path: 'user-edit/:id',
         component: UserCreate,
+        title: 'Update User',
+        data: {
+          title: 'Update User',
+        },
       },
       {
         path: 'log-list',
         component: LogList,
+        title: 'Logs',
+        data: {
+          title: 'Logs',
+        },
       },
       {
         path: 'log/:id',
         component: LogView,
+        title: 'Logs',
+        data: {
+          title: 'Logs',
+        },
       },
     ],
   },

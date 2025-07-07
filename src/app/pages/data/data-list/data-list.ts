@@ -70,15 +70,16 @@ export class DataList implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
+    this.file.patchValue(file);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = (reader.result as string).split(',')[1]; // get base64 part only
-      this.file.patchValue(base64);
-      this.file.updateValueAndValidity();
-      // Now you can send `uploadedFileBase64` to your backend
-    };
-    reader.readAsDataURL(file);
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   const base64 = (reader.result as string).split(',')[1]; // get base64 part only
+    //   this.file.patchValue(base64);
+    //   this.file.updateValueAndValidity();
+    //   // Now you can send `uploadedFileBase64` to your backend
+    // };
+    // reader.readAsDataURL(file);
   }
 
   downloadTemplateWithHeaders(): void {
@@ -129,7 +130,11 @@ export class DataList implements OnInit {
   }
 
   onSubmit() {
-    this.dataService.upload(this.form.value).subscribe({
+    const form = this.form.value;
+    const data = new FormData();
+    data.append('category', form.category);
+    data.append('file', form.file, 'file');
+    this.dataService.upload(data).subscribe({
       next: (res) => {
         alert('data uploaded successfully');
       },

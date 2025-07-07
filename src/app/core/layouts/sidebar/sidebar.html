@@ -1,4 +1,4 @@
-<section class="w-full h-full bg-white flex flex-col px-[12px] gap-y-[16px]">
+<section class="w-full h-full bg-white flex flex-col px-[12px] gap-y-[16px] border border-l border-gray-200">
   <!-- <div class="profile-card">
     <img src="assets/Avatar.svg" alt="">
     <div class="mx-2">
@@ -12,14 +12,10 @@
   </div> -->
 
   <ul class="flex flex-col gap-y-[12px] cursor-pointer">
-    <li class="flex p-4 items-center hover:rounded-full hover:bg-secondary hover:text-primary">
-      <span class="px-2">
-        MWANGA.
-      </span>
-
-
+    <li class="flex p-4 items-center justify-center hover:rounded-full hover:bg-secondary hover:text-primary">
+      <img [src]="'logo.png'" alt="logo" class="h-10 mb-2" />
     </li>
-    @for (route of routes; track route._id) {
+    @for (route of routes; track $index) {
     <li [routerLink]="[route.link]" routerLinkActive="active"
       class="flex p-4 items-center hover:rounded-full hover:bg-secondary hover:text-primary">
       <span [innerHTML]="route.icon">

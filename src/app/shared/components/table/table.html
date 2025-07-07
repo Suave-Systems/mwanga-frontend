@@ -1,23 +1,70 @@
 <div class="overflow-x-auto">
-  <table class="min-w-full divide-y divide-gray-200 shadow-md rounded-lg overflow-hidden">
+  <table class="min-w-full divide-y divide-gray-200 shadow-md rounded-lg overflow-hidden table-auto">
     <thead class="bg-gray-100">
       <tr>
         @for (column of columns; track $index) {
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider text-nowrap">
           {{ column.label }}
+        </th>
+        }
+        @if (showOptions) {
+        <th>
+          Actions
+        </th>
+        }
+        @if (menuTemplate) {
+        <th>
+          Actions
         </th>
         }
       </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
+      @if ((data.length || 0) > 0 ) {
       @for (row of data; track $index) {
       <tr (click)="onRowClick(row)" class="hover:bg-gray-50">
         @for (column of columns; track $index) {
+        @if (column.key === 'status') {
+        <td class="align-middle">
+          <span [ngClass]="{
+            'bg-green-100 text-green-800': row[column.key] === 'active',
+            'bg-yellow-100 text-yellow-800': row[column.key] === 'pending',
+            'bg-red-100 text-red-800': row[column.key] === 'inactive'
+          }" class="px-3 py-1 rounded-md text-xs font-semibold capitalize inline-block">
+            {{ row[column.key] || 'N/A' }}
+          </span>
+        </td>
+        } @else {
+
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-          {{ row[column.key] }}
+          {{ row[column.key] || "N/A" }}
+        </td>
+        }
+        }
+        @if (showOptions) {
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-end">
+          <button (click)="onMoreOptions(row)" class="p-2 hover:bg-gray-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 8a2 2 0 100-4 2 2 0 000 4zm0 2a2 2 0 100 4 2 2 0 000-4zm0 6a2 2 0 100 4 2 2 0 000-4z" />
+            </svg>
+          </button>
+
+        </td>
+        }
+        @if (menuTemplate) {
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-end">
+          <button [matMenuTriggerFor]="menuTemplate" (click)="onMenuOpen(row)"
+            class="p-2 hover:bg-gray-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill="currentColor">
+              <path
+                d="M10 4.167q-.521 0-.885-.365-.365-.364-.365-.885 0-.521.365-.885.364-.365.885-.365.521 0 .885.365.365.364.365.885 0 .521-.365.885-.364.365-.885.365Zm0 5q-.521 0-.885-.365-.365-.364-.365-.885 0-.521.365-.885.364-.365.885-.365.521 0 .885.365.365.364.365.885 0 .521-.365.885-.364.365-.885.365Zm0 5q-.521 0-.885-.365-.365-.364-.365-.885 0-.521.365-.885.364-.365.885-.365.521 0 .885.365.365.364.365.885 0 .521-.365.885-.364.365-.885.365Z" />
+            </svg>
+          </button>
+
         </td>
         }
       </tr>
+      }
       }
     </tbody>
   </table>

@@ -12,6 +12,7 @@ export class InputComponent {
   @Input('control') control!: FormControl;
   @Input('inputClass') inputClass = '';
   @Input('label') label!: string;
+  @Input('readonly') readonly: boolean = false;
   @Input('type') type: 'text' | 'password' | 'email' | 'tel' = 'text';
   @Input('errorMessage')
   errorMessage: string = `Invalid ${

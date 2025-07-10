@@ -10,6 +10,8 @@ import { LogView } from './pages/log/log-view/log-view';
 import { UserList } from './pages/user/user-list/user-list';
 import { UserCreate } from './pages/user/user-create/user-create';
 import { DataList } from './pages/data/data-list/data-list';
+import { Profile } from './pages/profile/profile/profile';
+import { ChangePassword } from './pages/profile/change-password/change-password';
 
 export const routes: Routes = [
   {
@@ -81,6 +83,22 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'user-profile',
+        component: Profile,
+        title: 'User Profile',
+        data: {
+          title: 'User Profile',
+        },
+      },
+      {
+        path: 'change-password',
+        component: ChangePassword,
+        title: 'Change Password',
+        data: {
+          title: 'Change Password',
+        },
+      },
+      {
         path: 'user-list',
         component: UserList,
         title: 'User Management',
@@ -104,14 +122,6 @@ export const routes: Routes = [
           title: 'Update User',
         },
       },
-      // {
-      //   path: 'log-list',
-      //   component: LogList,
-      //   title: 'Logs',
-      //   data: {
-      //     title: 'Logs',
-      //   },
-      // },
       {
         path: 'log/:id',
         component: LogView,

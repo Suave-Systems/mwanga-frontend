@@ -1,17 +1,29 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs';
+import { Cookie } from '../../../shared/services/cookie';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [MatMenuModule, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   currentPageTitle = '';
+  user: any;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private cookie: Cookie
+  ) {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -21,6 +33,7 @@ export class Header {
       .subscribe((title) => {
         this.currentPageTitle = title || '';
       });
+    this.user = JSON.parse(this.cookie.get('user'));
   }
 
   private getDeepestChild(route: ActivatedRoute): ActivatedRoute {

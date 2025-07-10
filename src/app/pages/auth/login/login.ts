@@ -10,7 +10,7 @@ import { Button } from '../../../shared/components/button/button';
 import { InputComponent } from '../../../shared/components/input/input';
 import { Auth } from '../../../shared/services/auth';
 import { Helper } from '../../../shared/services/helper';
-import { shareReplay, Subscription } from 'rxjs';
+import { finalize, shareReplay, Subscription } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -61,7 +61,12 @@ export class Login {
     this.isLoading.set(true);
     this.sub = this.authService
       .login({ ...this.loginForm.value })
-      .pipe(shareReplay(1))
+      .pipe(
+        shareReplay(1),
+        finalize(() => {
+          this.isLoading.set(false);
+        })
+      )
       .subscribe({
         next: (res: any) => {
           this.isLoading.set(false);

@@ -19,4 +19,10 @@ export class User extends BaseService {
   setNewPassword(payload: any) {
     return this.http.post(``, payload);
   }
+
+  getUser() {
+    return this.http.get(
+      'https://mwanga-backend.onrender.com/users/v1/users/me/'
+    );
+  }
 }

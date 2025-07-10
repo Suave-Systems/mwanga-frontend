@@ -106,11 +106,9 @@ export class UserCreate implements OnInit {
         first_name: first_name,
         last_name: last_name,
         is_active: is_active,
+        user_type: user_type.user_type,
       });
-      this.user_type.setValue(user_type.user_type);
       this.form.updateValueAndValidity();
-      this.user_type.updateValueAndValidity();
-      console.log(this.form.value);
 
       this.passwordForm.get('email')?.patchValue(user.email);
       this.passwordForm.updateValueAndValidity();

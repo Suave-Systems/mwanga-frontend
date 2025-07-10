@@ -1,6 +1,40 @@
-<header class="flex items-center p-2 bg-white border-b border-gray-200">
+<header class="flex items-center justify-between p-2 bg-white border-b border-gray-200">
   <h1 class="text-xl font-semibold text-primary text-nowrap">
     {{currentPageTitle}}
     <!-- Welcome to your dashboard -->
   </h1>
+
+  <button [matMenuTriggerFor]="menu"
+    class="group rounded-full px-2 py-1 bg-gray-300 flex items-center gap-2 overflow-hidden transition-all duration-300">
+    <!-- Avatar Icon (slides left) -->
+    <span class="rounded-full bg-white p-1 transform transition-transform duration-300 group-hover:-translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    </span>
+
+    <!-- User info (hidden initially, revealed on hover) -->
+    <div
+      class=" text-primary text-start max-w-0 opacity-0 overflow-hidden group-hover:max-w-xs group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">
+      <p class="text-sm">
+        {{user.first_name}} {{user.last_name}}
+      </p>
+      <p class="font-semibold text-xs">
+        {{user.role}}
+      </p>
+    </div>
+  </button>
+
 </header>
+
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item [routerLink]="['/main/user-profile']" routerLinkActive="router-link-active">
+    View Profile
+  </button>
+  <button mat-menu-item [routerLink]="['/main/change-password']" routerLinkActive="router-link-active">
+    Change Password
+  </button>
+</mat-menu>

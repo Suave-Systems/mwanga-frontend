@@ -1,5 +1,5 @@
 <button [type]="type" [disabled]="buttonDisabled" (click)="onButtonClick()" [ngClass]="inputClass"
-  class="text-white rounded-md font-medium text-center flex items-center justify-center gap-2 transition duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+  class="rounded-md font-medium text-center flex items-center justify-center gap-2 transition duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
   <ng-content></ng-content>
   @if (loading) {
   <span class="spinner"></span>

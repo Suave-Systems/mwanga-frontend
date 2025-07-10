@@ -68,7 +68,13 @@
   </div> -->
 
   <!-- Submit -->
-  <app-button [buttonDisabled]="isLoading()" [loading]="isLoading()" (buttonClick)="onLogin()">
+  <app-button [inputClass]="'text-primary bg-secondary w-full px-4 py-2'" [buttonDisabled]="isLoading()"
+    [loading]="isLoading()" (buttonClick)="onLogin()">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M15 12H3m0 0l4-4m-4 4l4 4m8-4v6a2 2 0 002 2h3a2 2 0 002-2V6a2 2 0 00-2-2h-3a2 2 0 00-2 2v6z" />
+    </svg>
     Log In
   </app-button>
 </form>

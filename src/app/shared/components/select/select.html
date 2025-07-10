@@ -15,3 +15,8 @@
   }
   }
 </select>
+@if ((control.touched || control.dirty) && control.invalid) {
+<p class="text-sm text-red-500">
+  {{errorMessage}}
+</p>
+}

@@ -15,6 +15,9 @@ import {
   CategoryCreateRequest as CategoryCreateResponse,
 } from '../../../core/model/model.ts';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Notification } from '../../../shared/services/notification';
+import { Helper } from '../../../shared/services/helper';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-category-create',
@@ -30,9 +33,13 @@ export class CategoryCreate implements OnInit {
 
   private fb = inject(FormBuilder);
   private categoryService = inject(Category);
+  private helperService = inject(Helper);
   private router = inject(Router);
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private notificationService: Notification
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -98,6 +105,7 @@ export class CategoryCreate implements OnInit {
   onSave() {
     this.categoryService
       .sendPost<BaseCreateAPIResponse<CategoryCreateResponse>>(this.form.value)
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (res) => {
           this.router.navigate(['/main/category-list']);
@@ -108,6 +116,7 @@ export class CategoryCreate implements OnInit {
   onEdit() {
     this.categoryService
       .sendPatch<BaseCreateAPIResponse<CategoryCreateResponse>>(this.form.value)
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (res) => {
           this.router.navigate(['/main/category-list']);
@@ -116,6 +125,11 @@ export class CategoryCreate implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      this.helperService.validateAllFormFields(this.form);
+      return;
+    }
+    this.isLoading.set(true);
     if (this.mode === 'new') {
       this.onSave();
       return;
@@ -124,15 +138,21 @@ export class CategoryCreate implements OnInit {
   }
 
   onToggleCategory() {
-    const value = confirm(
-      `Are you sure you want to ${
-        this.is_active.value ? 'Deactivate' : 'Activate'
-      } User`
-    );
-
-    if (value) {
-      this.is_active.patchValue(!this.is_active.value);
-      this.onSubmit();
-    }
+    const title = this.is_active.value
+      ? 'Deactivate Category'
+      : 'Activate Category';
+    this.notificationService
+      .confirm(
+        `${title} Category?`,
+        `Are you sure you want to ${title} Category?`,
+        title,
+        'Cancel'
+      )
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.is_active.patchValue(!this.is_active.value);
+          this.onSubmit();
+        }
+      });
   }
 }

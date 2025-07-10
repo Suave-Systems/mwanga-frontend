@@ -18,4 +18,7 @@ export class Select {
   @Input('displayName') displayName = 'label';
   @Input('value') value = 'value';
   @Input('getObject') getObject = false;
+  errorMessage: string = `Invalid ${
+    this.label || 'input'
+  }. Please check your entries and try again.`;
 }

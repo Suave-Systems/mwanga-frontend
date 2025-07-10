@@ -42,10 +42,18 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: DataList,
+        component: LogList,
         title: 'Overview',
         data: {
           title: 'Overview',
+        },
+      },
+      {
+        path: 'data-upload',
+        component: DataList,
+        title: 'Upload Data',
+        data: {
+          title: 'Upload Data',
         },
       },
       {
@@ -73,10 +81,6 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'data-list',
-        component: DataList,
-      },
-      {
         path: 'user-list',
         component: UserList,
         title: 'User Management',
@@ -100,14 +104,14 @@ export const routes: Routes = [
           title: 'Update User',
         },
       },
-      {
-        path: 'log-list',
-        component: LogList,
-        title: 'Logs',
-        data: {
-          title: 'Logs',
-        },
-      },
+      // {
+      //   path: 'log-list',
+      //   component: LogList,
+      //   title: 'Logs',
+      //   data: {
+      //     title: 'Logs',
+      //   },
+      // },
       {
         path: 'log/:id',
         component: LogView,

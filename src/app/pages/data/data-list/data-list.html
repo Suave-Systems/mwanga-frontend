@@ -2,28 +2,64 @@
   <p>Data management</p>
 </div>
 
-<div class="mt-5">
-  <app-select [getObject]="true" [options]="categoryList" placeholder="select a category" label="Category"
-    [control]="categoryObject" [value]="'id'" [displayName]="'name'" errorMessage="Please select a valid category.">
-  </app-select>
+@if (isGettingCategories) {
+<div class="h-[50vh] flex justify-center items-center">
+  <div>
+    <div class="flex items-center justify-center">
+      <span class="table-spinner"></span>
+    </div>
+    <p class="text-center mt-8">Please wait...</p>
+  </div>
 </div>
-
+} @else {
 <!-- File upload & template download section -->
 <div class="mt-6 p-4 border border-gray-300 rounded-xl bg-gray-50">
+  <div>
+    <div class="flex items-end gap-2">
+      <div class="flex-grow">
+        <app-select [getObject]="true" [options]="categoryList" placeholder="select a category" label="Category"
+          [control]="categoryObject" [value]="'id'" [displayName]="'name'"
+          errorMessage="Please select a valid category.">
+        </app-select>
+      </div>
+
+      <app-button (buttonClick)="downloadTemplateWithHeaders()">
+        <div class="flex gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+
+          <span class="text-nowrap">Download Template</span>
+
+        </div>
+      </app-button>
+    </div>
+
+    <p class="mb-5 w-full text-xs text-gray-500">Don't have the template? Click the download button to download selected
+      category template</p>
+  </div>
+
   <label class="block mb-2 font-medium text-gray-700">Upload File</label>
   <div class="flex items-center gap-4">
     <input class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       type="file" (change)="onFileSelected($event)" />
 
-    <app-button (buttonClick)="downloadTemplateWithHeaders()">
-      <span class="text-nowrap">Download Template</span>
-    </app-button>
+
   </div>
+  @if ((file.touched || file.dirty) && file.invalid) {
+  <p class="text-sm text-red-500">
+    {{'File is a required please check your entries and try again.'}}
+  </p>
+  }
   <p class="mt-2 text-sm text-gray-500">Supported format: .xlsx, .csv</p>
 
 </div>
 <div class="mt-5">
-  <app-button (buttonClick)="onSubmit()">
+  <app-button [loading]="isUploading" [buttonDisabled]="isUploading" (buttonClick)="onSubmit()">
     <span class="text-nowrap">Upload Template</span>
   </app-button>
 </div>
+}

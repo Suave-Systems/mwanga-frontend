@@ -13,12 +13,14 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { InputComponent } from '../../../shared/components/input/input';
 import * as XLSX from 'xlsx';
+import { Notification } from '../../../shared/services/notification';
+import { finalize } from 'rxjs';
+import { Helper } from '../../../shared/services/helper';
 
 @Component({
   selector: 'app-data-list',
-  imports: [Button, Select, InputComponent],
+  imports: [Button, Select],
   templateUrl: './data-list.html',
   styleUrl: './data-list.scss',
 })
@@ -27,18 +29,14 @@ export class DataList implements OnInit {
   private fb = inject(FormBuilder);
   private dataService = inject(Data);
   private categoryService = inject(Category);
-  tableColumns = [
-    { key: 'name', label: 'Name' },
-    { key: 'email', label: 'Email' },
-    { key: 'role', label: 'Role' },
-  ];
+  private alertService = inject(Notification);
+  private helperService = inject(Helper);
 
-  tableData: any[] = [];
   categoryList: CategoryResponse[] = [];
-  tableHeaders: any[] = [];
+  isUploading = false;
+  isGettingCategories = true;
 
   ngOnInit() {
-    this.getDataList();
     this.getCategoryList();
 
     this.form = this.fb.group({
@@ -50,7 +48,6 @@ export class DataList implements OnInit {
     this.categoryObject.valueChanges.subscribe((value) => {
       this.category.patchValue(value.id);
       this.category.updateValueAndValidity();
-      this.tableHeaders = value.columns;
     });
   }
 
@@ -71,22 +68,13 @@ export class DataList implements OnInit {
     const file = input.files?.[0];
     if (!file) return;
     this.file.patchValue(file);
-
-    // const reader = new FileReader();
-    // reader.onload = () => {
-    //   const base64 = (reader.result as string).split(',')[1]; // get base64 part only
-    //   this.file.patchValue(base64);
-    //   this.file.updateValueAndValidity();
-    //   // Now you can send `uploadedFileBase64` to your backend
-    // };
-    // reader.readAsDataURL(file);
   }
 
   downloadTemplateWithHeaders(): void {
-    const headers = this.tableHeaders;
+    const { columns, name } = this.categoryObject.value;
 
     // Convert header array to worksheet by using an array of objects with empty values
-    const emptyRow = headers.reduce((acc, header) => {
+    const emptyRow = columns.reduce((acc: any, header: any) => {
       acc[header] = '';
       return acc;
     }, {} as Record<string, any>);
@@ -105,7 +93,7 @@ export class DataList implements OnInit {
     }
     worksheet['!ref'] = XLSX.utils.encode_range({
       s: { r: 0, c: 0 },
-      e: { r: 0, c: headers.length - 1 },
+      e: { r: 0, c: columns.length - 1 },
     });
 
     const workbook: XLSX.WorkBook = {
@@ -124,47 +112,46 @@ export class DataList implements OnInit {
 
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'template.xlsx';
+    link.download = name;
     link.click();
     URL.revokeObjectURL(link.href);
+    this.alertService.toast('Template Download Successful');
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      this.helperService.validateAllFormFields(this.form);
+      return;
+    }
+    this.isUploading = true;
     const form = this.form.value;
     const data = new FormData();
     data.append('category', form.category);
     data.append('file', form.file, form.file.name);
 
-    this.dataService.upload(data).subscribe({
-      next: (res) => {
-        alert('data uploaded successfully');
-      },
-    });
-  }
-
-  getCategoryList() {
-    const params: any = { is_active: true };
-    this.categoryService
-      .sendGetAll<BaseAPIResponse<CategoryResponse[]>>(params)
+    this.dataService
+      .upload(data)
+      .pipe(finalize(() => (this.isUploading = false)))
       .subscribe({
-        next: (res) => {
-          this.categoryList = res.results;
-          // console.log(res);
+        next: (res: any) => {
+          this.alertService.toast(res.message, 'success');
+          // alert('data uploaded successfully');
         },
       });
   }
 
-  getDataList() {
-    this.dataService.sendGetAll<BaseAPIResponse<any[]>>().subscribe({
-      next: (res) => {
-        this.tableData = res.results;
-        // console.log(res);
-      },
-    });
-  }
-
-  handleRowClick(row: any) {
-    console.log('Row clicked:', row);
-    // Perform navigation, open modal, etc.
+  getCategoryList() {
+    this.isGettingCategories = true;
+    const params: any = { is_active: true };
+    this.categoryService
+      .sendGetAll<BaseAPIResponse<CategoryResponse[]>>(params)
+      .pipe(finalize(() => (this.isGettingCategories = false)))
+      .subscribe({
+        next: (res) => {
+          this.isGettingCategories = false;
+          this.categoryList = res.results;
+          // console.log(res);
+        },
+      });
   }
 }

@@ -12,6 +12,7 @@ import { BaseCreateAPIResponse } from '../../../core/model/model.ts';
 import { InputComponent } from '../../../shared/components/input/input';
 import { Button } from '../../../shared/components/button/button';
 import { Select } from '../../../shared/components/select/select';
+import { Notification } from '../../../shared/services/notification';
 
 @Component({
   selector: 'app-user-create',
@@ -31,7 +32,10 @@ export class UserCreate implements OnInit {
 
   private userService = inject(User);
   private router = inject(Router);
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private notificationService: Notification
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -157,15 +161,20 @@ export class UserCreate implements OnInit {
   }
 
   onToggleUser() {
-    const value = confirm(
-      `Are you sure you want to ${
-        this.is_active.value ? 'Deactivate' : 'Activate'
-      } User`
-    );
-
-    if (value) {
-      this.is_active.patchValue(!this.is_active.value);
-      this.onSubmit();
-    }
+    const title = this.is_active.value ? 'Deactivate User' : 'Activate User';
+    this.notificationService
+      .confirm(
+        `${title} User?`,
+        `Are you sure you want to ${title} User?`,
+        title,
+        'Cancel'
+      )
+      .then((result) => {
+        if (result.isConfirmed) {
+          // Do something irreversible
+          this.is_active.patchValue(!this.is_active.value);
+          this.onSubmit();
+        }
+      });
   }
 }

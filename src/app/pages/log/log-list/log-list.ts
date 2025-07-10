@@ -4,10 +4,12 @@ import { Log } from '../../../shared/services/log';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { TableFilters } from '../../../shared/components/table-filters/table-filters';
 import { DatePipe } from '@angular/common';
+import { Button } from '../../../shared/components/button/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-log-list',
-  imports: [Table, EmptyState, TableFilters],
+  imports: [Table, EmptyState, TableFilters, Button, RouterLink],
   providers: [DatePipe],
   templateUrl: './log-list.html',
   styleUrl: './log-list.scss',

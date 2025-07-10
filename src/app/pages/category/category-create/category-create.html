@@ -2,9 +2,10 @@
   <div class="w-full bg-white rounded-xl shadow-lg mx-4 p-8">
     <div class="flex items-center justify-between">
       <h2 class="text-[32px] font-semibold text-[#333333] mb-1">{{mode === 'new'? 'New' : 'Edit'}} Category </h2>
-
+      @if (mode === 'edit') {
       <app-button (buttonClick)="onToggleCategory()">{{ is_active.value? 'Deactivate' : 'Activate'}}
         Category</app-button>
+      }
     </div>
     <p class="text-sm text-[#666666] mb-6">some nice category text</p>
     @if (errorMessage) {
@@ -27,7 +28,15 @@
         <div class="flex justify-between">
           <h2 class="text-[32px] font-semibold text-[#333333] mb-1">Columns</h2>
           <app-button [buttonDisabled]="isLoading()" [loading]="isLoading()" (buttonClick)="addColumn()">
-            + Add another column
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+
+            <span>
+              Add another column
+            </span>
           </app-button>
 
         </div>

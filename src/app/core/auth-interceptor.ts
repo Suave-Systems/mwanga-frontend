@@ -5,6 +5,11 @@ import { Auth } from '../shared/services/auth';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(Auth);
   const token = authService.getToken();
+  req = req.clone({
+    setHeaders: {
+      Accept: 'application/json',
+    },
+  });
   if (token) {
     req = req.clone({
       setHeaders: {

@@ -131,9 +131,12 @@ export class DataList implements OnInit {
 
   onSubmit() {
     const form = this.form.value;
+    console.log(form);
+
     const data = new FormData();
     data.append('category', form.category);
-    data.append('file', form.file, 'file');
+    data.append('file', form.file, 'file.xlsx');
+
     this.dataService.upload(data).subscribe({
       next: (res) => {
         alert('data uploaded successfully');

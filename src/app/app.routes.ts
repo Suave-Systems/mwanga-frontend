@@ -31,6 +31,7 @@ export const routes: Routes = [
       {
         path: 'login',
         component: Login,
+        title: 'MWANGA | Login',
       },
       {
         path: 'forgot-password',
@@ -45,7 +46,7 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: LogList,
-        title: 'Overview',
+        title: 'MWANGA | Overview',
         data: {
           title: 'Overview',
         },
@@ -53,7 +54,7 @@ export const routes: Routes = [
       {
         path: 'data-upload',
         component: DataList,
-        title: 'Upload Data',
+        title: 'MWANGA | Upload Data',
         data: {
           title: 'Upload Data',
         },
@@ -61,7 +62,7 @@ export const routes: Routes = [
       {
         path: 'category-list',
         component: CategoryList,
-        title: 'Category Management',
+        title: 'MWANGA | Category Management',
         data: {
           title: 'Category Management',
         },
@@ -69,7 +70,7 @@ export const routes: Routes = [
       {
         path: 'category-create',
         component: CategoryCreate,
-        title: 'New Category',
+        title: 'MWANGA | New Category',
         data: {
           title: 'New Category',
         },
@@ -77,7 +78,7 @@ export const routes: Routes = [
       {
         path: 'category-edit/:id',
         component: CategoryCreate,
-        title: 'Update Category',
+        title: 'MWANGA | Update Category',
         data: {
           title: 'Update Category',
         },
@@ -85,7 +86,7 @@ export const routes: Routes = [
       {
         path: 'user-profile',
         component: Profile,
-        title: 'User Profile',
+        title: 'MWANGA | User Profile',
         data: {
           title: 'User Profile',
         },
@@ -93,7 +94,7 @@ export const routes: Routes = [
       {
         path: 'change-password',
         component: ChangePassword,
-        title: 'Change Password',
+        title: 'MWANGA | Change Password',
         data: {
           title: 'Change Password',
         },
@@ -101,7 +102,7 @@ export const routes: Routes = [
       {
         path: 'user-list',
         component: UserList,
-        title: 'User Management',
+        title: 'MWANGA | User Management',
         data: {
           title: 'User Management',
         },
@@ -109,7 +110,7 @@ export const routes: Routes = [
       {
         path: 'user-create',
         component: UserCreate,
-        title: 'New User',
+        title: 'MWANGA | New User',
         data: {
           title: 'New User',
         },
@@ -117,7 +118,7 @@ export const routes: Routes = [
       {
         path: 'user-edit/:id',
         component: UserCreate,
-        title: 'Update User',
+        title: 'MWANGA | Update User',
         data: {
           title: 'Update User',
         },
@@ -125,7 +126,7 @@ export const routes: Routes = [
       {
         path: 'log/:id',
         component: LogView,
-        title: 'Logs',
+        title: 'MWANGA | Logs',
         data: {
           title: 'Logs',
         },

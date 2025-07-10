@@ -70,11 +70,12 @@
   <!-- Submit -->
   <app-button [inputClass]="'text-primary bg-secondary w-full px-4 py-2'" [buttonDisabled]="isLoading()"
     [loading]="isLoading()" (buttonClick)="onLogin()">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+      stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round"
-        d="M15 12H3m0 0l4-4m-4 4l4 4m8-4v6a2 2 0 002 2h3a2 2 0 002-2V6a2 2 0 00-2-2h-3a2 2 0 00-2 2v6z" />
+        d="M9 12h12m0 0l-4-4m4 4l-4 4M15 5V4a2 2 0 00-2-2H5a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2v-1" />
     </svg>
+
     Log In
   </app-button>
 </form>

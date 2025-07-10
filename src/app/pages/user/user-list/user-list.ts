@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Table } from '../../../shared/components/table/table';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Button } from '../../../shared/components/button/button';
 import { User } from '../../../shared/services/user';
 import { TableFilters } from '../../../shared/components/table-filters/table-filters';
@@ -43,6 +43,7 @@ export class UserList {
   private userService = inject(User);
   private datePipe = inject(DatePipe);
   selectedUser: any;
+  private router = inject(Router);
   // constructor(private datePipe: DatePipe) {}
 
   ngOnInit() {
@@ -64,6 +65,7 @@ export class UserList {
         this.tableData = res.results.map((user: any) => {
           user.name = `${user.first_name} ${user.last_name}`;
           user.status = user.is_active ? 'active' : 'inactive';
+          user.user_type = user?.user_type?.user_type_name || 'N/A';
           user.last_login =
             this.datePipe.transform(user.last_login, 'mediumDate') ||
             'Not available';
@@ -90,7 +92,23 @@ export class UserList {
   }
 
   handleRowClick(row: any) {
-    console.log('Row clicked:', row);
+    this.router.navigate(['/main/user-edit', row.id]);
     // Perform navigation, open modal, etc.
+  }
+
+  onToggleUser() {
+    const { id, is_active } = this.selectedUser;
+    const value = confirm(
+      `Are you sure you want to ${is_active ? 'Deactivate' : 'Activate'} User`
+    );
+
+    if (value) {
+      // this.selectedUser.is_active = !this.selectedUser.is_active;
+      this.userService.sendPatch({ id, is_active: !is_active }).subscribe({
+        next: (res) => {
+          this.getDataList();
+        },
+      });
+    }
   }
 }

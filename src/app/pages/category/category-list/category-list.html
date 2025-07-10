@@ -15,7 +15,7 @@
     @if (tableData.length > 0 && !isLoading) {
     <!-- Table -->
     <app-table [columns]="tableColumns" [data]="tableData" [menuTemplate]="rowMenu"
-      (menuOpened)="handleMenuOptions($event)"></app-table>
+      (menuOpened)="handleMenuOptions($event)" (rowClick)="handleRowClick($event)"></app-table>
 
     }
   </div>

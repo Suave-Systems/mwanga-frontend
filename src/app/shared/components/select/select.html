@@ -11,7 +11,7 @@
   @if (getObject) {
   <option [ngValue]="option">{{ option[displayName] }}</option>
   } @else {
-  <option [ngValue]="option['value']">{{ option[displayName] }}</option>
+  <option [ngValue]="option[value]">{{ option[displayName] }}</option>
   }
   }
 </select>

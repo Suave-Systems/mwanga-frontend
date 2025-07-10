@@ -1,6 +1,10 @@
 <div class="flex flex-col items-center justify-center bg-[#ffffff] p-8 px-4">
   <div class="w-full bg-white rounded-xl shadow-lg mx-4 p-8">
-    <h2 class="text-[32px] font-semibold text-[#333333] mb-1">New User </h2>
+    <div class="flex items-center justify-between">
+      <h2 class="text-[32px] font-semibold text-[#333333] mb-1">{{mode === 'create'? 'New' : 'Edit'}} User </h2>
+
+      <app-button (buttonClick)="onToggleUser()">{{ is_active.value? 'Deactivate' : 'Activate'}} User</app-button>
+    </div>
     <p class="text-sm text-[#666666] mb-6">some nice category text</p>
     @if (errorMessage) {
     <p class="text-[#F66E6E] text-center text-[1rem]/[1.5rem]">

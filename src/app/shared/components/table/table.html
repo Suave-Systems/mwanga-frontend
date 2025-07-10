@@ -22,10 +22,10 @@
     <tbody class="bg-white divide-y divide-gray-200">
       @if ((data.length || 0) > 0 ) {
       @for (row of data; track $index) {
-      <tr (click)="onRowClick(row)" class="hover:bg-gray-50">
+      <tr class="hover:bg-gray-50 cursor-pointer">
         @for (column of columns; track $index) {
         @if (column.key === 'status') {
-        <td class="align-middle">
+        <td (click)="onRowClick(row)" class="align-middle">
           <span [ngClass]="{
             'bg-green-100 text-green-800': row[column.key] === 'active',
             'bg-yellow-100 text-yellow-800': row[column.key] === 'pending',
@@ -36,7 +36,7 @@
         </td>
         } @else {
 
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+        <td (click)="onRowClick(row)" class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
           {{ row[column.key] || "N/A" }}
         </td>
         }

@@ -1,7 +1,7 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { Table } from '../../../shared/components/table/table';
 import { Button } from '../../../shared/components/button/button';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Category } from '../../../shared/services/category';
 import {
   BaseAPIResponse,
@@ -35,6 +35,7 @@ import { DatePipe } from '@angular/common';
 export class CategoryList {
   private categoryService = inject(Category);
   private datePipe = inject(DatePipe);
+  private router = inject(Router);
   tableColumns = [
     { key: 'name', label: 'Name' },
     { key: 'user', label: 'Created By' },
@@ -149,7 +150,6 @@ export class CategoryList {
   }
 
   handleRowClick(row: any) {
-    console.log('Row clicked:', row);
-    // Perform navigation, open modal, etc.
+    this.router.navigate(['/main/category-edit', row?.id]);
   }
 }

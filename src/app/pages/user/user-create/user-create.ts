@@ -41,6 +41,7 @@ export class UserCreate implements OnInit {
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
       user_type: ['', [Validators.required]],
+      is_active: ['', [Validators.required]],
     });
     this.passwordForm = this.fb.group({
       email: ['', [Validators.required]],
@@ -72,6 +73,9 @@ export class UserCreate implements OnInit {
   get email() {
     return this.form.get('email') as FormControl;
   }
+  get is_active() {
+    return this.form.get('is_active') as FormControl;
+  }
 
   get password() {
     return this.form.get('password') as FormControl;
@@ -91,11 +95,21 @@ export class UserCreate implements OnInit {
 
   getById(id: string): void {
     this.userService.sendGetById(id).subscribe((user: any) => {
+      const { email, id, first_name, last_name, user_type, is_active } = user;
       this.form.patchValue({
-        ...user,
+        email: email,
+        id: id,
+        first_name: first_name,
+        last_name: last_name,
+        is_active: is_active,
       });
+      this.user_type.setValue(user_type.user_type);
+      this.form.updateValueAndValidity();
+      this.user_type.updateValueAndValidity();
+      console.log(this.form.value);
 
       this.passwordForm.get('email')?.patchValue(user.email);
+      this.passwordForm.updateValueAndValidity();
     });
   }
 
@@ -107,7 +121,7 @@ export class UserCreate implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSave() {
     this.userService
       .sendPost<BaseCreateAPIResponse<any>>(this.form.value)
       .subscribe({
@@ -116,6 +130,23 @@ export class UserCreate implements OnInit {
         },
       });
   }
+  onUpdate() {
+    this.userService
+      .sendPatch<BaseCreateAPIResponse<any>>(this.form.value)
+      .subscribe({
+        next: (res) => {
+          this.router.navigate(['/main/user-list']);
+        },
+      });
+  }
+
+  onSubmit() {
+    if (this.mode === 'create') {
+      this.onSave();
+      return;
+    }
+    this.onUpdate();
+  }
 
   onSetNewPassword() {
     this.userService.setNewPassword(this.passwordForm.value).subscribe({
@@ -123,5 +154,18 @@ export class UserCreate implements OnInit {
         this.router.navigate(['/main/user-list']);
       },
     });
+  }
+
+  onToggleUser() {
+    const value = confirm(
+      `Are you sure you want to ${
+        this.is_active.value ? 'Deactivate' : 'Activate'
+      } User`
+    );
+
+    if (value) {
+      this.is_active.patchValue(!this.is_active.value);
+      this.onSubmit();
+    }
   }
 }

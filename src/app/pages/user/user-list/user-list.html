@@ -14,8 +14,8 @@
 
   <div class="mt-5">
     @if (tableData.length > 0 && !isLoading) {
-    <app-table [columns]="tableColumns" [data]="tableData" [menuTemplate]="moreMenu" (menuOpened)="onMenuOpened($event)"
-      (rowClick)="handleRowClick($event)"></app-table>
+    <!-- [menuTemplate]="moreMenu" (menuOpened)="onMenuOpened($event)" -->
+    <app-table [columns]="tableColumns" [data]="tableData" (rowClick)="handleRowClick($event)"></app-table>
     }
   </div>
 
@@ -38,9 +38,18 @@
 </div>
 
 <mat-menu #moreMenu="matMenu">
-  <div class="bg-white p-2 rounded-md">
+  <div class="bg-white p-2 rounded-md grid grid-col-1 gap-2 items-start">
     <button [routerLink]="['/main/user-edit', selectedUser?.id]" routerLinkActive="router-link-active" mat-menu-item>
       Edit
     </button>
+    <button (click)="onToggleUser()" mat-menu-item>
+      Activate/Deactivate User
+    </button>
+    <!-- <ul>
+      <li>
+      </li>
+      <li>
+      </li>
+    </ul> -->
   </div>
 </mat-menu>

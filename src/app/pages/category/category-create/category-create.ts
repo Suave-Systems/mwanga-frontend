@@ -38,6 +38,7 @@ export class CategoryCreate implements OnInit {
     this.form = this.fb.group({
       id: [],
       name: ['', [Validators.required]],
+      is_active: [],
       columns: this.fb.array([]),
     });
     this.checkMode();
@@ -59,6 +60,10 @@ export class CategoryCreate implements OnInit {
     return this.form.get('name') as FormControl;
   }
 
+  get is_active() {
+    return this.form.get('is_active') as FormControl;
+  }
+
   get columns() {
     return this.form.get('columns') as FormArray;
   }
@@ -68,6 +73,7 @@ export class CategoryCreate implements OnInit {
       this.form.patchValue({
         name: category.name,
         id: category.id,
+        is_active: category.is_active,
       });
 
       // Populate columns if available
@@ -115,5 +121,18 @@ export class CategoryCreate implements OnInit {
       return;
     }
     this.onEdit();
+  }
+
+  onToggleCategory() {
+    const value = confirm(
+      `Are you sure you want to ${
+        this.is_active.value ? 'Deactivate' : 'Activate'
+      } User`
+    );
+
+    if (value) {
+      this.is_active.patchValue(!this.is_active.value);
+      this.onSubmit();
+    }
   }
 }

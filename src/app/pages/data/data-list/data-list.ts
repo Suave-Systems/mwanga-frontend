@@ -131,11 +131,9 @@ export class DataList implements OnInit {
 
   onSubmit() {
     const form = this.form.value;
-    console.log(form);
-
     const data = new FormData();
     data.append('category', form.category);
-    data.append('file', form.file, 'file.xlsx');
+    data.append('file', form.file, form.file.name);
 
     this.dataService.upload(data).subscribe({
       next: (res) => {
@@ -145,8 +143,9 @@ export class DataList implements OnInit {
   }
 
   getCategoryList() {
+    const params: any = { is_active: true };
     this.categoryService
-      .sendGetAll<BaseAPIResponse<CategoryResponse[]>>()
+      .sendGetAll<BaseAPIResponse<CategoryResponse[]>>(params)
       .subscribe({
         next: (res) => {
           this.categoryList = res.results;

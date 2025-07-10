@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class Button {
   @Input('inputClass') inputClass =
-    'w-full bg-primary hover:bg-primary-hover py-2 px-4';
+    'w-full bg-primary hover:bg-primary-hover py-2 px-4 text-white';
   @Input('buttonDisabled') buttonDisabled = false;
   @Input() loading = false;
   @Input() type = 'button';

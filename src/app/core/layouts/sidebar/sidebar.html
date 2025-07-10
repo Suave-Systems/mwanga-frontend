@@ -12,12 +12,12 @@
   </div> -->
 
   <ul class="flex flex-col gap-y-[12px] cursor-pointer">
-    <li class="flex p-4 items-center justify-center hover:rounded-full hover:bg-secondary hover:text-primary">
+    <li class="flex p-4 items-center justify-center">
       <img [src]="'logo.png'" alt="logo" class="h-10 mb-2" />
     </li>
     @for (route of routes; track $index) {
     <li [routerLink]="[route.link]" routerLinkActive="active"
-      class="flex p-4 items-center hover:rounded-full hover:bg-secondary hover:text-primary">
+      class="flex p-4 items-center hover:rounded-full hover:bg-secondary hover:text-white">
       <span [innerHTML]="route.icon">
       </span>
 

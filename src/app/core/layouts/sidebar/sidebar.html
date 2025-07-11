@@ -16,7 +16,7 @@
       <img [src]="'logo.png'" alt="logo" class="h-10 mb-2" />
     </li>
     @for (route of routes; track $index) {
-    <li [routerLink]="[route.link]" routerLinkActive="active"
+    <li *appHasPermission="route.permissions" [routerLink]="[route.link]" routerLinkActive="active"
       class="flex p-4 items-center hover:rounded-full hover:bg-secondary hover:text-white">
       <span [innerHTML]="route.icon">
       </span>

@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Cookie } from './cookie';
 import { environment } from '../../../environments/environment';
+import { PermissionsService } from './permission.js';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class Auth {
   private isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());
 
   private cookieService = inject(Cookie);
+  private permissionService = inject(PermissionsService);
   private router = inject(Router);
 
   constructor(private http: HttpClient) {}
@@ -29,6 +31,7 @@ export class Auth {
         );
         this.cookieService.set('refreshToken', res.token.refresh);
         this.cookieService.set('user', JSON.stringify(res.data));
+        this.permissionService.setPermissions(res.data.permissions);
 
         this.loginSubject.next(res);
         this.loginSubject.complete();

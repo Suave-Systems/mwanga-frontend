@@ -31,10 +31,12 @@
 
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item [routerLink]="['/main/user-profile']" routerLinkActive="router-link-active">
+  <button *appHasPermission="'users.can_update_users'" mat-menu-item [routerLink]="['/main/user-profile']"
+    routerLinkActive="router-link-active">
     View Profile
   </button>
-  <button mat-menu-item [routerLink]="['/main/change-password']" routerLinkActive="router-link-active">
+  <button *appHasPermission="'users.can_reset_password'" mat-menu-item [routerLink]="['/main/change-password']"
+    routerLinkActive="router-link-active">
     Change Password
   </button>
 </mat-menu>

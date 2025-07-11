@@ -8,10 +8,11 @@ import {
 import { filter, map, mergeMap } from 'rxjs';
 import { Cookie } from '../../../shared/services/cookie';
 import { MatMenuModule } from '@angular/material/menu';
+import { HasPermissionDirective } from '../../directives/has-permission';
 
 @Component({
   selector: 'app-header',
-  imports: [MatMenuModule, RouterLink],
+  imports: [MatMenuModule, RouterLink, HasPermissionDirective],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

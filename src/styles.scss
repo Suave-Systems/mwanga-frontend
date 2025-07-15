@@ -67,6 +67,34 @@
   }
 }
 
+@keyframes blob {
+  0%,
+  100% {
+    transform: scale(1) skew(0deg, 0deg);
+  }
+  50% {
+    transform: scale(1.25) skew(20deg, 10deg);
+  }
+}
+
+@keyframes blob-slow {
+  0%,
+  100% {
+    transform: scale(1) skew(0deg, 0deg) rotate(180deg);
+  }
+  50% {
+    transform: scale(1.18) skew(-8deg, 3.5deg) rotate(180deg);
+  }
+}
+
+.animate-blob {
+  animation: blob 6s ease-in-out infinite;
+}
+
+.animate-blob-slow {
+  animation: blob-slow 9s ease-in-out infinite;
+}
+
 html,
 body {
   height: 100%;

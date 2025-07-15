@@ -23,7 +23,7 @@
         </app-select>
       </div>
 
-      <app-button (buttonClick)="downloadTemplateWithHeaders()">
+      <app-button *appHasPermission="'app.can_download_template'" (buttonClick)="downloadTemplateWithHeaders()">
         <div class="flex gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -58,8 +58,9 @@
 
 </div>
 <div class="mt-5">
-  <app-button [loading]="isUploading" [buttonDisabled]="isUploading" (buttonClick)="onSubmit()">
-    <span class="text-nowrap">Upload Template</span>
+  <app-button *appHasPermission="'app.can_create_category_data'" [loading]="isUploading" [buttonDisabled]="isUploading"
+    (buttonClick)="onSubmit()">
+    <span class="text-nowrap">Upload File</span>
   </app-button>
 </div>
 }

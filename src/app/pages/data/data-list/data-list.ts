@@ -17,10 +17,11 @@ import * as XLSX from 'xlsx';
 import { Notification } from '../../../shared/services/notification';
 import { finalize } from 'rxjs';
 import { Helper } from '../../../shared/services/helper';
+import { HasPermissionDirective } from '../../../core/directives/has-permission';
 
 @Component({
   selector: 'app-data-list',
-  imports: [Button, Select],
+  imports: [Button, Select, HasPermissionDirective],
   templateUrl: './data-list.html',
   styleUrl: './data-list.scss',
 })

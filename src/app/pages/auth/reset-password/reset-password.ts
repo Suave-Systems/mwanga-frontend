@@ -42,8 +42,8 @@ export class ResetPassword {
       },
       {
         validator: this.helperService.passwordMatch(
-          this.password,
-          this.confirmPassword
+          'password',
+          'confirmPassword'
         ),
       }
     );

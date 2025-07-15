@@ -7,6 +7,8 @@ import { TableFilters } from '../../../shared/components/table-filters/table-fil
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatMenu } from '@angular/material/menu';
+import { HasPermissionDirective } from '../../../core/directives/has-permission';
+import { PermissionsService } from '../../../shared/services/permission';
 
 @Component({
   selector: 'app-user-list',
@@ -18,6 +20,7 @@ import { MatMenu } from '@angular/material/menu';
     TableFilters,
     EmptyState,
     MatMenu,
+    HasPermissionDirective,
   ],
   providers: [DatePipe],
   templateUrl: './user-list.html',
@@ -42,6 +45,7 @@ export class UserList {
   isLoading = false;
   private userService = inject(User);
   private datePipe = inject(DatePipe);
+  private permissionService = inject(PermissionsService);
   selectedUser: any;
   private router = inject(Router);
   // constructor(private datePipe: DatePipe) {}
@@ -67,10 +71,10 @@ export class UserList {
           user.status = user.is_active ? 'active' : 'inactive';
           user.user_type = user?.user_type?.user_type_name || 'N/A';
           user.last_login =
-            this.datePipe.transform(user.last_login, 'mediumDate') ||
+            this.datePipe.transform(user.last_login, 'medium') ||
             'Not available';
           user.last_upload_date =
-            this.datePipe.transform(user.last_upload_date, 'mediumDate') ||
+            this.datePipe.transform(user.last_upload_date, 'medium') ||
             'Not available';
           return user;
         });
@@ -92,23 +96,29 @@ export class UserList {
   }
 
   handleRowClick(row: any) {
-    this.router.navigate(['/main/user-edit', row.id]);
+    const hasPermission = this.permissionService.hasPermission(
+      'users.can_update_users'
+    );
+    hasPermission && this.router.navigate(['/main/user-edit', row.id]);
     // Perform navigation, open modal, etc.
   }
 
-  onToggleUser() {
-    const { id, is_active } = this.selectedUser;
-    const value = confirm(
-      `Are you sure you want to ${is_active ? 'Deactivate' : 'Activate'} User`
-    );
+  // onToggleUser() {
+  //   const hasPermission = this.permissionService.hasPermission(
+  //     'users.can_update_users'
+  //   );
+  //   const { id, is_active } = this.selectedUser;
+  //   const value = confirm(
+  //     `Are you sure you want to ${is_active ? 'Deactivate' : 'Activate'} User`
+  //   );
 
-    if (value) {
-      // this.selectedUser.is_active = !this.selectedUser.is_active;
-      this.userService.sendPatch({ id, is_active: !is_active }).subscribe({
-        next: (res) => {
-          this.getDataList();
-        },
-      });
-    }
-  }
+  //   if (value && hasPermission) {
+  //     // this.selectedUser.is_active = !this.selectedUser.is_active;
+  //     this.userService.sendPatch({ id, is_active: !is_active }).subscribe({
+  //       next: (res) => {
+  //         this.getDataList();
+  //       },
+  //     });
+  //   }
+  // }
 }

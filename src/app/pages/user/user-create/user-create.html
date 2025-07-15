@@ -4,7 +4,11 @@
       <h2 class="text-[32px] font-semibold text-[#333333] mb-1">{{mode === 'create'? 'New' : 'Edit'}} User </h2>
 
       @if (mode === 'edit') {
-      <app-button (buttonClick)="onToggleUser()">{{ is_active.value? 'Deactivate' : 'Activate'}} User</app-button>
+      <app-button
+        [inputClass]="is_active.value? 'bg-red-500 text-white w-full py-2 px-4 text-white' : 'w-full bg-green-500 hover:bg-primary-hover py-2 px-4 text-white'"
+        (buttonClick)="onToggleUser()">
+        {{ is_active.value? 'Deactivate' : 'Activate'}} User
+      </app-button>
       }
     </div>
     <p class="text-sm text-[#666666] mb-6">some nice category text</p>
@@ -106,7 +110,7 @@
     </form>
 
     @if (mode === 'edit') {
-    <form [formGroup]="passwordForm">
+    <form *appHasPermission="'users.can_reset_password'" [formGroup]="passwordForm">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
         <!-- New Password -->
         <div class="mb-4">

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormControl,
   FormGroup,
   ValidationErrors,
+  ValidatorFn,
 } from '@angular/forms';
 
 @Injectable({
@@ -40,19 +42,16 @@ export class Helper {
     });
   }
 
-  passwordMatch(
-    passwordControl: FormControl,
-    confirmPasswordControl: FormControl
-  ): ValidationErrors | undefined | null {
-    // const passwordControl = formGroup.get('password');
-    // const confirmPasswordControl = formGroup.get('confirmPassword');
+  passwordMatch(passwordKey: string, confirmPasswordKey: string): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const password = formGroup.get(passwordKey);
+      const confirmPassword = formGroup.get(confirmPasswordKey);
 
-    if (passwordControl?.value === confirmPasswordControl?.value) {
-      return null;
-    } else {
-      return {
-        passwordMatch: true,
-      };
-    }
+      if (!password || !confirmPassword) return null;
+
+      return password.value === confirmPassword.value
+        ? null
+        : { passwordMismatch: true };
+    };
   }
 }

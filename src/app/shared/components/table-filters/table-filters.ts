@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Button } from '../button/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-table-filters',
@@ -14,10 +15,13 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
     MatNativeDateModule,
   ],
+  providers: [DatePipe],
   templateUrl: './table-filters.html',
   styleUrl: './table-filters.scss',
 })
 export class TableFilters {
+  private datePipe = inject(DatePipe);
+
   search = '';
   from_date = '';
   to_date = '';
@@ -43,8 +47,8 @@ export class TableFilters {
   onApplyFilter() {
     this.applyFilters.emit({
       search: this.search,
-      from_date: this.from_date,
-      to_date: this.to_date,
+      from_date: this.datePipe.transform(this.from_date, 'yyyy-MM-dd') || '',
+      to_date: this.datePipe.transform(this.to_date, 'yyyy-MM-dd') || '',
       filter: this.selectedFilter,
     });
   }

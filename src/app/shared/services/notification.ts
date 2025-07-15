@@ -12,6 +12,8 @@ export class Notification {
     text = '',
     confirmButtonText = 'Yes',
     cancelButtonText = 'Cancel',
+    confirmButtonClass = 'bg-primary text-white px-4 py-2 rounded focus:outline-none mr-2',
+    cancelButtonClass = 'bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 focus:outline-none',
     icon: SweetAlertIcon = 'warning'
   ): Promise<SweetAlertResult> {
     return Swal.fire({
@@ -22,10 +24,8 @@ export class Notification {
       confirmButtonText,
       cancelButtonText,
       customClass: {
-        confirmButton:
-          'bg-primary text-white px-4 py-2 rounded focus:outline-none mr-2',
-        cancelButton:
-          'bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 focus:outline-none',
+        confirmButton: confirmButtonClass,
+        cancelButton: cancelButtonClass,
       },
       buttonsStyling: false,
     });

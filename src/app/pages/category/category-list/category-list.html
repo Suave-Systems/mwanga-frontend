@@ -4,9 +4,9 @@
       <h2 class="text-xl font-semibold text-gray-800">Category List</h2>
       <p class="text-gray-600 mb-6">View, filter, and manage all available data logs in the system.</p>
     </div>
-    <app-button [routerLink]="['/main/category-create']" routerLinkActive="router-link-active"> <svg
-        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
+    <app-button *appHasPermission="'app.can_create_category'" [routerLink]="['/main/category-create']"
+      routerLinkActive="router-link-active"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="12" y1="5" x2="12" y2="19" />
         <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
@@ -43,16 +43,17 @@
     <app-empty-state></app-empty-state>
   </div>
   }
-  <!-- <app-pagination></app-pagination> -->
+  <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+    (pageChanged)="onPageChange($event)"></app-pagination>
 </div>
 
 <mat-menu #rowMenu="matMenu">
   <div class="bg-white">
-    <button (click)="downloadTemplateWithHeaders()" mat-menu-item>
+    <button *appHasPermission="'app.can_download_template'" (click)="downloadTemplateWithHeaders()" mat-menu-item>
       Download Template
     </button>
-    <button [routerLink]="['/main/category-edit', selectedCategory?.id]" routerLinkActive="router-link-active"
-      mat-menu-item>
+    <button *appHasPermission="'app.can_update_category'" [routerLink]="['/main/category-edit', selectedCategory?.id]"
+      routerLinkActive="router-link-active" mat-menu-item>
       Edit
     </button>
   </div>

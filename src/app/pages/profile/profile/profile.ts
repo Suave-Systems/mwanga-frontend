@@ -16,7 +16,7 @@ import { InputComponent } from '../../../shared/components/input/input';
 
 @Component({
   selector: 'app-profile',
-  imports: [Button, Select, InputComponent, ReactiveFormsModule],
+  imports: [Button, InputComponent, ReactiveFormsModule],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })

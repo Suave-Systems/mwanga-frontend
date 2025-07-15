@@ -2,10 +2,11 @@
   <div class="flex justify-between items-center">
     <div>
       <h2 class="text-xl font-semibold text-gray-800">Logs</h2>
-      <p class="text-gray-600 mb-6">View, filter, and manage all available categories in the system.</p>
+      <p class="text-gray-600 mb-6">View, filter, and manage all available data logs in the system.</p>
     </div>
 
-    <app-button [routerLink]="['/main/data-upload']" routerLinkActive="router-link-active">
+    <app-button *appHasPermission="'app.can_create_category_data'" [routerLink]="['/main/data-upload']"
+      routerLinkActive="router-link-active">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -44,5 +45,6 @@
     <app-empty-state></app-empty-state>
   </div>
   }
-  <!-- <app-pagination></app-pagination> -->
+  <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+    (pageChanged)="onPageChange($event)"></app-pagination>
 </div>

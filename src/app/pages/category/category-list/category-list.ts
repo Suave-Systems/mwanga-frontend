@@ -15,6 +15,8 @@ import { EmptyState } from '../../../shared/components/empty-state/empty-state';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
+import { HasPermissionDirective } from '../../../core/directives/has-permission';
+import { PermissionsService } from '../../../shared/services/permission';
 
 @Component({
   selector: 'app-category-list',
@@ -27,6 +29,7 @@ import { DatePipe } from '@angular/common';
     TableFilters,
     Pagination,
     EmptyState,
+    HasPermissionDirective,
   ],
   providers: [DatePipe],
   templateUrl: './category-list.html',
@@ -34,6 +37,7 @@ import { DatePipe } from '@angular/common';
 })
 export class CategoryList {
   private categoryService = inject(Category);
+  private permissionService = inject(PermissionsService);
   private datePipe = inject(DatePipe);
   private router = inject(Router);
   tableColumns = [
@@ -61,9 +65,12 @@ export class CategoryList {
   ];
 
   tableData: any[] = [];
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalItems = 0;
   search = '';
   selectedCategory: any;
-  params: any;
+  params: any = {};
 
   isLoading = false;
 
@@ -72,11 +79,6 @@ export class CategoryList {
   }
 
   onSearchChange() {}
-  onApplyFilter(value: any) {
-    this.params = value;
-    this.params.is_active = value.filter;
-    this.getDataList();
-  }
 
   downloadTemplateWithHeaders(): void {
     const headers: any[] = this.selectedCategory.columns;
@@ -127,16 +129,22 @@ export class CategoryList {
 
   getDataList() {
     this.isLoading = true;
+    const params = {
+      page: this.currentPage,
+      page_size: this.itemsPerPage,
+      ...this.params,
+    };
     this.categoryService
-      .sendGetAll<BaseAPIResponse<CategoryResponse[]>>(this.params)
+      .sendGetAll<BaseAPIResponse<CategoryResponse[]>>(params)
       .subscribe({
         next: (res) => {
           this.isLoading = false;
+          this.totalItems = res.count;
           this.tableData = res.results.map((category: any) => {
             category.status = category.is_active ? 'active' : 'inactive';
             category.last_modified = this.datePipe.transform(
               category.last_modified,
-              'mediumDate'
+              'medium'
             );
             return category;
           });
@@ -145,11 +153,25 @@ export class CategoryList {
       });
   }
 
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.getDataList();
+  }
+
+  onApplyFilter(value: any) {
+    this.params = value;
+    this.params.is_active = value.filter;
+    this.getDataList();
+  }
+
   handleMenuOptions(row: any) {
     this.selectedCategory = row;
   }
 
   handleRowClick(row: any) {
-    this.router.navigate(['/main/category-edit', row?.id]);
+    const hasPermission = this.permissionService.hasPermission(
+      'app.can_update_category'
+    );
+    hasPermission && this.router.navigate(['/main/category-edit', row?.id]);
   }
 }

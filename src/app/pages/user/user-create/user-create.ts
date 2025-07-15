@@ -13,10 +13,17 @@ import { InputComponent } from '../../../shared/components/input/input';
 import { Button } from '../../../shared/components/button/button';
 import { Select } from '../../../shared/components/select/select';
 import { Notification } from '../../../shared/services/notification';
+import { HasPermissionDirective } from '../../../core/directives/has-permission';
 
 @Component({
   selector: 'app-user-create',
-  imports: [ReactiveFormsModule, InputComponent, Button, Select],
+  imports: [
+    ReactiveFormsModule,
+    InputComponent,
+    Button,
+    Select,
+    HasPermissionDirective,
+  ],
   templateUrl: './user-create.html',
   styleUrl: './user-create.scss',
 })
@@ -165,7 +172,10 @@ export class UserCreate implements OnInit {
         `${title} User?`,
         `Are you sure you want to ${title} User?`,
         title,
-        'Cancel'
+        'Cancel',
+        this.is_active.value
+          ? 'bg-red-500 text-white py-2 px-4 text-white rounded mr-2'
+          : 'bg-primary text-white px-4 py-2 rounded mr-2'
       )
       .then((result) => {
         if (result.isConfirmed) {

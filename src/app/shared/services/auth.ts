@@ -44,6 +44,17 @@ export class Auth {
     }
   }
 
+  setToken(token: string) {
+    this.cookieService.set(this.cookieService.COOKIE_NAME, token);
+  }
+
+  refreshToken(refresh: string) {
+    return this.http.post<{ access: string }>(
+      `${this.baseURl}auth/v1/token/refresh/`,
+      { refresh }
+    );
+  }
+
   login(loginRequest: LoginRequest) {
     this.http
       .post<LoginResponse>(`${this.baseURl}auth/v1/login/`, loginRequest)

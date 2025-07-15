@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://mwanga-backend.onrender.com/',
+  baseUrl: 'http://backend:8000/',
 };

@@ -19,7 +19,7 @@ export class User extends BaseService {
   }
 
   setNewPassword(payload: any) {
-    return this.http.post(``, payload);
+    return this.http.post(`${this.baseURI}auth/v1/set_password`, payload);
   }
 
   getUser() {

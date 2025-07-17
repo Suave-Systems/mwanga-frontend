@@ -30,7 +30,8 @@ export class UserList {
   tableColumns = [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
-    { key: 'last_login', label: 'Last Login' },
+    { key: 'last_login', label: 'Date Joined' },
+    { key: 'date_created', label: 'Last Login' },
     { key: 'user_type', label: 'Role' },
     { key: 'last_upload_date', label: 'Date of Last Upload' },
     { key: 'last_upload_count', label: 'Last Upload Count' },
@@ -70,6 +71,9 @@ export class UserList {
           user.name = `${user.first_name} ${user.last_name}`;
           user.status = user.is_active ? 'active' : 'inactive';
           user.user_type = user?.user_type?.user_type_name || 'N/A';
+          user.date_created =
+            this.datePipe.transform(user.date_created, 'medium') ||
+            'Not available';
           user.last_login =
             this.datePipe.transform(user.last_login, 'medium') ||
             'Not available';

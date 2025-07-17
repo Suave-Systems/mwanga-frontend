@@ -30,8 +30,8 @@ export class UserList {
   tableColumns = [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
-    { key: 'last_login', label: 'Date Joined' },
-    { key: 'date_created', label: 'Last Login' },
+    { key: 'date_created', label: 'Date Joined' },
+    { key: 'last_login', label: 'Last Login' },
     { key: 'user_type', label: 'Role' },
     { key: 'last_upload_date', label: 'Date of Last Upload' },
     { key: 'last_upload_count', label: 'Last Upload Count' },

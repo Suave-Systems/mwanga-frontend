@@ -29,6 +29,7 @@ export class CategoryCreate implements OnInit {
   form!: FormGroup;
   errorMessage = '';
   isLoading = signal(false);
+  isLoadingCategoryInfo = signal(false);
   mode: 'new' | 'edit' = 'new';
 
   private fb = inject(FormBuilder);
@@ -76,22 +77,26 @@ export class CategoryCreate implements OnInit {
   }
 
   getById(id: string): void {
-    this.categoryService.sendGetById(id).subscribe((category: any) => {
-      this.form.patchValue({
-        name: category.name,
-        id: category.id,
-        is_active: category.is_active,
-      });
-
-      // Populate columns if available
-      const columnsArray = this.form.get('columns') as FormArray;
-      columnsArray.clear();
-      if (Array.isArray(category.columns)) {
-        category.columns.forEach((col: any) => {
-          columnsArray.push(this.fb.control(col));
+    this.isLoadingCategoryInfo.set(true);
+    this.categoryService
+      .sendGetById(id)
+      .pipe(finalize(() => this.isLoadingCategoryInfo.set(false)))
+      .subscribe((category: any) => {
+        this.form.patchValue({
+          name: category.name,
+          id: category.id,
+          is_active: category.is_active,
         });
-      }
-    });
+
+        // Populate columns if available
+        const columnsArray = this.form.get('columns') as FormArray;
+        columnsArray.clear();
+        if (Array.isArray(category.columns)) {
+          category.columns.forEach((col: any) => {
+            columnsArray.push(this.fb.control(col));
+          });
+        }
+      });
   }
 
   addColumn() {

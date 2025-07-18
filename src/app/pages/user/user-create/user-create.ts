@@ -32,7 +32,10 @@ export class UserCreate implements OnInit {
   passwordForm!: FormGroup;
   private fb = inject(FormBuilder);
   errorMessage = '';
-  isLoading = signal(false);
+  isLoadingUserInfo = signal(false);
+  isUpdatingUser = signal(false);
+  isSettingPassword = signal(false);
+  isLoadingRoles = signal(false);
   hide = true;
   userRoles: any[] = [];
   mode: 'create' | 'edit' = 'create';
@@ -105,46 +108,79 @@ export class UserCreate implements OnInit {
   }
 
   getById(id: string): void {
-    this.userService.sendGetById(id).subscribe((user: any) => {
-      const { email, id, first_name, last_name, user_type, is_active } = user;
-      this.form.patchValue({
-        email: email,
-        id: id,
-        first_name: first_name,
-        last_name: last_name,
-        is_active: is_active,
-        user_type: user_type.user_type,
-      });
-      this.form.updateValueAndValidity();
-
-      this.passwordForm.get('email')?.patchValue(user.email);
-      this.passwordForm.updateValueAndValidity();
-    });
+    this.isLoadingUserInfo.set(true);
+    this.userService.sendGetById(id).subscribe(
+      (user: any) => {
+        const { email, id, first_name, last_name, user_type, is_active } = user;
+        this.form.patchValue({
+          email: email,
+          id: id,
+          first_name: first_name,
+          last_name: last_name,
+          is_active: is_active,
+          user_type: user_type.user_type,
+        });
+        this.form.updateValueAndValidity();
+        this.isLoadingUserInfo.set(false);
+        this.passwordForm.get('email')?.patchValue(user.email);
+        this.passwordForm.updateValueAndValidity();
+      },
+      (err) => {
+        this.isLoadingUserInfo.set(false);
+        this.notificationService.toast('Failed to load user details', 'error');
+      }
+    );
   }
 
   getRoles() {
+    this.isLoadingRoles.set(true);
     this.userService.getRoles().subscribe({
       next: (res: any) => {
+        this.isLoadingRoles.set(false);
         this.userRoles = res.data;
+      },
+      error: (err) => {
+        this.isLoadingRoles.set(false);
+        this.notificationService.toast('Failed to load user roles', 'error');
       },
     });
   }
 
   onSave() {
+    this.isUpdatingUser.set(true);
     this.userService
       .sendPost<BaseCreateAPIResponse<any>>(this.form.value)
       .subscribe({
         next: (res) => {
           this.router.navigate(['/main/user-list']);
+          this.isUpdatingUser.set(false);
+          this.notificationService.toast(
+            'User created successfully',
+            'success'
+          );
+        },
+        error: (err) => {
+          this.isUpdatingUser.set(false);
+          this.notificationService.toast('Failed to create user', 'error');
         },
       });
   }
   onUpdate() {
+    this.isUpdatingUser.set(true);
     this.userService
       .sendPatch<BaseCreateAPIResponse<any>>(this.form.value)
       .subscribe({
         next: (res) => {
+          this.isUpdatingUser.set(false);
+          this.notificationService.toast(
+            'User updated successfully',
+            'success'
+          );
           this.router.navigate(['/main/user-list']);
+        },
+        error: (err) => {
+          this.isUpdatingUser.set(false);
+          this.notificationService.toast('Failed to update user', 'error');
         },
       });
   }
@@ -158,14 +194,22 @@ export class UserCreate implements OnInit {
   }
 
   onSetNewPassword() {
+    this.isSettingPassword.set(true);
     this.userService.setNewPassword(this.passwordForm.value).subscribe({
       next: (res) => {
         this.router.navigate(['/main/user-list']);
+        this.isSettingPassword.set(false);
+        this.notificationService.toast('Password change successful', 'success');
+      },
+      error: (err) => {
+        this.isSettingPassword.set(false);
+        this.notificationService.toast('Failed to set new password', 'error');
       },
     });
   }
 
   onToggleUser() {
+    this.isUpdatingUser.set(true);
     const title = this.is_active.value ? 'Deactivate User' : 'Activate User';
     this.notificationService
       .confirm(
@@ -182,7 +226,9 @@ export class UserCreate implements OnInit {
           // Do something irreversible
           this.is_active.patchValue(!this.is_active.value);
           this.onSubmit();
+          return;
         }
+        this.isUpdatingUser.set(false);
       });
   }
 }

@@ -4,7 +4,8 @@
       <h2 class="text-[32px] font-semibold text-[#333333] mb-1">{{mode === 'create'? 'New' : 'Edit'}} User </h2>
 
       @if (mode === 'edit') {
-      <app-button
+      <app-button [buttonDisabled]="isLoadingUserInfo() || isUpdatingUser()"
+        [loading]="isLoadingUserInfo() || isUpdatingUser()"
         [inputClass]="is_active.value? 'bg-red-500 text-white w-full py-2 px-4 text-white' : 'w-full bg-green-500 hover:bg-primary-hover py-2 px-4 text-white'"
         (buttonClick)="onToggleUser()">
         {{ is_active.value? 'Deactivate' : 'Activate'}} User
@@ -18,6 +19,7 @@
     </p>
     }
 
+    @if (isLoadingUserInfo() === false && isLoadingRoles() === false) {
     <form [formGroup]="form">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- First Name -->
@@ -102,7 +104,8 @@
 
       <!-- Submit -->
       <div class="mt-8">
-        <app-button [buttonDisabled]="isLoading()" [loading]="isLoading()" (buttonClick)="onSubmit()">
+        <app-button [buttonDisabled]="isLoadingUserInfo() || isUpdatingUser()"
+          [loading]="isLoadingUserInfo() || isUpdatingUser()" (buttonClick)="onSubmit()">
           Continue
         </app-button>
       </div>
@@ -206,12 +209,24 @@
 
       <!-- Submit -->
       <div class="mt-8">
-        <app-button [buttonDisabled]="isLoading()" [loading]="isLoading()" (buttonClick)="onSetNewPassword()">
+        <app-button [buttonDisabled]="isSettingPassword()" [loading]="isLoadingUserInfo()"
+          (buttonClick)="onSetNewPassword()">
           Set New Password
         </app-button>
       </div>
 
     </form>
+    }
+
+    } @else {
+    <div class="h-[50vh] flex justify-center items-center">
+      <div>
+        <div class="flex items-center justify-center">
+          <span class="table-spinner"></span>
+        </div>
+        <p class="text-center mt-8">Please wait...</p>
+      </div>
+    </div>
     }
 
   </div>
